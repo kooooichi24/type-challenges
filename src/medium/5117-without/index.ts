@@ -18,11 +18,11 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Without<T extends number[], U extends number | number[]> = [
-  Exclude<T[number], U extends number[] ? U[number] : U>
-] extends [never]
-  ? []
-  : [Exclude<T[number], U extends number[] ? U[number] : U>];
+type Without<T, U> = T extends [infer H, ...infer T]
+  ? H extends (U extends number[] ? U[number] : U)
+    ? [...Without<T, U>]
+    : [H, ...Without<T, U>]
+  : [];
 
 type c = Without<[1, 2], 1>;
 type a = Without<[1, 2, 4, 1, 5], [1, 2]>;
